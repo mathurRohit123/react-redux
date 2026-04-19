@@ -16,10 +16,13 @@ const counterSlice = createSlice({
         },
         reset(state) {
             state.count = 0;
+        },
+        incrementByAmt(state, action) {
+            state.count += action.payload;
         }
     }
 });
 
-export const { increment, decrement, reset } = counterSlice.actions;
+export const { increment, decrement, reset, incrementByAmt } = counterSlice.actions;
 
 export default counterSlice.reducer;

@@ -1,77 +1,73 @@
-import React from "react";
-import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement, reset } from './store/counterSlice';
-// import Todo from "./components/Todo";
-// import AddTodo from "./components/AddTodo";
+import React, { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, reset, incrementByAmt } from "./store/counterSlice";
 
 function App() {
-
+  const [input, setInput] = useState("");
   const count = useSelector((state) => state.counter.count);
-
   const dispatch = useDispatch();
 
+  function handleIncreaseByAmt() {
+    const value = Number(input);
+
+    if (Number.isNaN(value) || input.trim() === "") {
+      alert("Please enter a number");
+      return;
+    }
+
+    dispatch(incrementByAmt(value));
+    setInput("");
+  }
+
   return (
-    <>
-      {/* <AddTodo></AddTodo> */}
-      {/* <Todo></Todo> */}
-      <div style={{
-        minHeight: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "#172842",
-        color: "white",
-      }} >
-        <div style={{
-          padding: '2rem',
-          borderRadius: "0.5rem",
-          background: '#1f2937',
-          textAlign: "center",
-          minWidth: '260px'
-        }} >
-          <h1 style={{ marginBottom: "1rem" }} >Redux Counter</h1>
+    <div className="app-root">
+      <div className="counter-card">
+        <h1 className="counter-title">Redux Counter</h1>
 
-          <div style={{
-            fontSize: "3rem",
-            marginBottom: "1.5rem"
-          }}>
-            { count }
-          </div>
+        <div className="counter-value">{count}</div>
 
-          <div style={{
-            display: "flex",
-            gap: "0.5rem",
-            justifyContent: "center"
-          }} >
-            <button onClick={() => dispatch(decrement())} style={{
-              padding: "0.5rem 1rem",
-              borderRadius: "0.25rem",
-              border: "none",
-              background: "#ef4444",
-              color: "white",
-              cursor: "pointer"
-            }}> -1 </button><br />
-            <button onClick={() => dispatch(reset())} style={{
-              padding: "0.5rem 1rem",
-              borderRadius: "0.25rem",
-              border: "none",
-              background: "#9ca3af",
-              color: "black",
-              cursor: "pointer",
-            }}> Reset </button><br />
-            <button onClick={() => dispatch(increment())} style={{
-              padding: "0.5rem 1rem",
-              borderRadius: "0.25rem",
-              border: "none",
-              background: "#22c55e",
-              color: "black",
-              cursor: "pointer"
-            }}> +1 </button>
-          </div>
+        <div className="counter-buttons">
+          <button
+            onClick={() => dispatch(decrement())}
+            className="btn btn-decrement"
+          >
+            -1
+          </button>
+          <button
+            onClick={() => dispatch(reset())}
+            className="btn btn-reset"
+          >
+            Reset
+          </button>
+          <button
+            onClick={() => dispatch(increment())}
+            className="btn btn-increment"
+          >
+            +1
+          </button>
+        </div>
+
+        <div className="counter-input-row">
+          <input
+            type="text"
+            name="increaseByAmt"
+            id="increaseByAmt"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            className="counter-input"
+            placeholder="Enter amount"
+          />
+          <button
+            type="button"
+            onClick={handleIncreaseByAmt}
+            className="btn btn-amount"
+          >
+            Add amount
+          </button>
         </div>
       </div>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
